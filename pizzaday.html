@@ -1,14 +1,52 @@
 <head>
-  <title>pizzaday</title>
+  <title>PizzaDay</title>
 </head>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+<body> 
+	{{> navbar}}
+  <div class="container"> 
+  	<br>
+  	<br>
+  	<br>
+  	<br>
+	 	 <div class="row">
+			{{> userlist}}
+	  </div>	  	
+	</div>  
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="navbar">
+	<div class="row">		
+		<nav class="navbar navbar-default navbar-fixed-top">		 
+		  <div class="container">
+		  	<ul class="nav navbar-nav">
+		  		<li><h1>PizzaDay</h1></li>		  		   		
+		   	</ul>
+		   	<ul class="nav navbar-nav navbar-right">
+          <li>{{> loginButtons}}</li>		
+        </ul>      	
+		  </div>   	  
+		</nav>		
+	</div>	
+</template>
+
+<template name="userlist">
+	<div class="col-xs-3 col-sm-2 col-md-2">
+		<div class="table-responsive">
+		  	<table class="table">
+		  		<thead>
+			    	<tr>
+				  		<th>Username</th>				  		
+				  	</tr>
+			  	</thead>
+				{{#each user}}
+			  	<tbody>
+				  	<tr>
+					  	<td>{{username}}</td>					  	
+					</tr> 
+				</tbody> 
+				{{/each}}
+		  	</table>
+		</div>		  	
+	</div>		
 </template>
