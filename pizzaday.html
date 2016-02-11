@@ -39,14 +39,18 @@
 				  		<th>Username</th>				  		
 				  	</tr>
 			  	</thead>
+ 		  	</table>
+
 				{{#each user}}
-			  	<tbody>
-				  	<tr>
-					  	<td>{{username}}</td>					  	
-					</tr> 
-				</tbody> 
+			  	<ul>
+			  		<li>{{username}}</li>
+			  	</ul>				  
 				{{/each}}
-		  	</table>
+				{{#each user}}
+			  	<ul>
+			  		<li>{{usernameGoogle}}</li>
+			  	</ul>				  
+				{{/each}}
 		</div>		  	
 	</div>		
 </template>

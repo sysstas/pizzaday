@@ -21,3 +21,5 @@ insecure                # Allow all DB writes from clients (for prototyping)
 twbs:bootstrap
 accounts-ui
 accounts-password
+accounts-google
+service-configuration
