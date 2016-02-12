@@ -6,26 +6,37 @@ if (Meteor.isClient) {
 
   //////////////////////////////////////////////  Helpers //////////////////////////
   Template.userlist.helpers({
-    user:function(){ 
-      var correct = Meteor.users.find();
-      console.log("user sais: "+correct);
-      if(correct != ""){
-        return correct;
-      }
-      return  ;
+    user:function(){       
+      return  Meteor.users.find();
     },
     usernameGoogle: function(){
-      var correct = this.services.google.name;
-      console.log("Google sais: "+correct);      
-      if(correct != ""){
-        return correct;
-      }      
-      return;
+            
+      return this.services.google.name;
+      console.log(this);
     }    
   }); 
 
+  Template.groupeList.helpers({
+    groupeNames:function(){      
+      return Groups.find({});
+    }
+  }); 
+
+
   //////////////////////////////// Events /////////////////////////////////////
-   
+  Template.buttons.events({
+    "submit .createGroupe": function(event) {
+      event.preventDefault();
+      var text = event.target.text.value;
+      Groups.insert({
+        groupName: text,
+        creator: Meteor.userId()
+      });
+      // Clear form
+      event.target.text.value = "";  
+    }
+
+  })
 
 
 

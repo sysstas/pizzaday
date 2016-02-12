@@ -11,6 +11,7 @@
   	<br>
 	 	 <div class="row">
 			{{> userlist}}
+			{{> buttons}}
 	  </div>	  	
 	</div>  
 </body>
@@ -40,7 +41,6 @@
 				  	</tr>
 			  	</thead>
  		  	</table>
-
 				{{#each user}}
 			  	<ul>
 			  		<li>{{username}}</li>
@@ -51,6 +51,39 @@
 			  		<li>{{usernameGoogle}}</li>
 			  	</ul>				  
 				{{/each}}
+		</div>		  	
+	</div>		
+</template>
+
+<template name="buttons">
+	<div class="col-xs-9 col-sm-10 col-md-10">
+		{{> groupeList}}
+		<div class="col-xs-4 col-sm-5 col-md-5">
+		  {{#if currentUser}}
+	      <form class="createGroupe">
+	        <input type="text" name="text" placeholder="Type name of groupe" />
+	      </form>
+	    {{/if}}
+		</div>
+
+	</div>
+</template>
+
+<template name="groupeList">
+	<div class="col-xs-3 col-sm-2 col-md-2">
+		<div class="table-responsive">
+		  	<table class="table">
+		  		<thead>
+			    	<tr>
+				  		<th>Groups</th>				  		
+				  	</tr>
+			  	</thead>
+ 		  	</table>
+				{{#each groupeNames}}
+			  	<ul>
+			  		<li>{{groupName}}</li>
+			  	</ul>				  
+				{{/each}}				
 		</div>		  	
 	</div>		
 </template>
