@@ -3,7 +3,24 @@
 </head>
 
 <body> 
-	{{> navbar}}
+	
+</body>
+
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}  
+</template>
+
+<template name="welcome">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Welcome to PizzaDay {{username}}!</h1>
+      <a href="/landing" class="btn btn-info">ENTER</a>
+    </div>
+  </div>
+</template> 
+
+<template name="landing">
   <div class="container"> 
   	<br>
   	<br>
@@ -13,8 +30,9 @@
 			{{> userlist}}
 			{{> buttons}}
 	  </div>	  	
-	</div>  
-</body>
+	</div>    
+</template>
+
 
 <template name="navbar">
 	<div class="row">		
@@ -81,7 +99,9 @@
  		  	</table>
 				{{#each groupeNames}}
 			  	<ul>
-			  		<li>{{groupName}}</li>
+			  		<li>{{groupName}}
+			  			<button class="delete">&times;</button>
+			  		</li>
 			  	</ul>				  
 				{{/each}}				
 		</div>		  	

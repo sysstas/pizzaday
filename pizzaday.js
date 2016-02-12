@@ -4,6 +4,29 @@ if (Meteor.isClient) {
     passwordSignupFields: "USERNAME_AND_EMAIL"
   });
 
+
+/////////////////////////////////////// routing ////////////////////////////
+
+Router.configure({
+  layoutTemplate: 'ApplicationLayout'
+});
+
+Router.route('/', function () {
+  this.render('welcome', {
+    to:"main"
+  });
+});
+
+Router.route('/landing', function () {
+  this.render('navbar', {
+    to:"navbar"
+  });
+  this.render('landing', {
+    to:"main"
+  });
+});
+
+
   //////////////////////////////////////////////  Helpers //////////////////////////
   Template.userlist.helpers({
     user:function(){       
@@ -36,9 +59,14 @@ if (Meteor.isClient) {
       event.target.text.value = "";  
     }
 
-  })
+  });
 
-
+  Template.groupeList.events({
+    "click .delete": function () {
+      Groups.remove(this._id);
+    }
+    
+  }); 
 
 
 }
