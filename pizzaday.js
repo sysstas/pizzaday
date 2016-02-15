@@ -26,24 +26,43 @@ Router.route('/landing', function () {
   });
 });
 
+Router.route('/groups/:_id', function () {
+  this.render('navbar', {
+    to:"navbar"
+  });
+  this.render('groupe', {
+    to:"main", 
+    data:function(){
+      return Groups.findOne({_id:this.params._id});
+    }
+  });
+});
+
 
   //////////////////////////////////////////////  Helpers //////////////////////////
   Template.userlist.helpers({
     user:function(){       
       return  Meteor.users.find();
     },
-    usernameGoogle: function(){
-            
+    usernameGoogle: function(){            
       return this.services.google.name;
       console.log(this);
     }    
   }); 
 
+
   Template.groupeList.helpers({
     groupeNames:function(){      
       return Groups.find({});
     }
-  }); 
+  });
+
+
+  Template.groupe.helpers({
+    function(){      
+      return Groups.find({});
+    }
+  });  
 
 
   //////////////////////////////// Events /////////////////////////////////////
@@ -51,6 +70,7 @@ Router.route('/landing', function () {
     "submit .createGroupe": function(event) {
       event.preventDefault();
       var text = event.target.text.value;
+
       Groups.insert({
         groupName: text,
         creator: Meteor.userId()
@@ -58,16 +78,27 @@ Router.route('/landing', function () {
       // Clear form
       event.target.text.value = "";  
     }
-
   });
 
   Template.groupeList.events({
     "click .delete": function () {
       Groups.remove(this._id);
-    }
-    
+      }
+     /*"click .idadd": function (event){
+      Session.set("idgroupe",this._id)
+     } */    
   }); 
 
+
+
+  Template.userlist.events({
+    "click .addtogroupe": function () {
+      Groups.find({_id: this.id}).insert({        
+        user: "test"        
+      });
+      console.log(Groups.user);
+    }
+  }); 
 
 }
 
@@ -81,6 +112,44 @@ ServiceConfiguration.configurations.insert({
   clientId: "416436598179-50lvops42dpr7ojef8og2i0du3ghkq7t.apps.googleusercontent.com",
   loginStyle: "popup",
   secret: "IF3NUy0rlZTc_R2yjp7aN4Nn"
-});  
+}); 
+
+Accounts.onCreateUser(function(options, user) {
+  console.log(user);
+  if (options.username) {
+    Userlist.insert({
+    id: user._id,    
+    usernme: options.username
+    });
+  };
+  if (!options.username) {
+    Userlist.insert({
+    id: user._id,    
+    usernme: user.services.google.name
+    });
+  };
+  
+  if (options.profile)
+    user.profile = options.profile;
+  return user;
+}); 
+  /*var counter = Meteor.users.find().count();
+
+  if (counter >= Userlist.counter.findOne()){
+    if (Meteor.user().profile.name) {
+      Userlist.insert({
+      userId: Meteor.userId(),
+      name: Meteor.user().profile.name 
+      });    
+    }
+    else if (Meteor.user().username){
+      Userlist.insert({
+      userId: Meteor.userId(),
+      name: Meteor.user().username 
+      }); 
+    }
+  } */
+    
+
 
 }
