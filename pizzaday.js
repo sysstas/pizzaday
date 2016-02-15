@@ -79,20 +79,27 @@ Router.route('/groups/:_id', function () {
   Template.groupeList.events({
     "click .delete": function () {
       Groups.remove(this._id);
-      }
-     /*"click .idadd": function (event){
-      Session.set("idgroupe",this._id)
-     } */    
+      },
+
+     "click .idadd": function (event){
+      
+      Session.set("idgroupe", this._id);
+        console.log(Session.get("idgroupe"));
+      
+     }     
   }); 
 
 
 
   Template.userlist.events({
-    "click .addtogroupe": function () {
-      Groups.find({_id: this.id}).insert({        
-        user: "test"        
-      });
-      console.log(Groups.user);
+    "click .addtogroupe": function (event) {
+      var temp = Groups.findOne({_id: Session.get("idgroupe")});
+          
+          console.log(this._id);
+         // temp.insert({
+        //    user: 
+        //  })       
+            
     }
   }); 
 
@@ -111,8 +118,8 @@ ServiceConfiguration.configurations.insert({
 }); 
 
 Accounts.onCreateUser(function(options, user) {
-  console.log(user);
-  if (options.username) {
+  // Here I fix difference between acconts-google and accounts-ui ways of saving username.
+  if (options.username) {      
     Userlist.insert({
     id: user._id,    
     username: options.username
