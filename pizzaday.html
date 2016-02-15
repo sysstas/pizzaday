@@ -79,11 +79,7 @@
 			  		</li>
 			  	</ul>				  
 				{{/each}}
-				{{#each user}}
-			  	<ul>
-			  		<li>{{usernameGoogle}}</li>
-			  	</ul>				  
-				{{/each}}
+				
 		</div>		  	
 	</div>		
 </template>
@@ -114,7 +110,7 @@
  		  	</table>
 				{{#each groupeNames}}
 			  	<ul>
-			  		<li><a href="/groups/{{_id}}">{{groupName}}</a>
+			  		<li><a class="idadd" href="/groups/{{_id}}">{{groupName}}</a>
 			  			<button class="delete">&times;</button>
 			  		</li>
 			  	</ul>				  

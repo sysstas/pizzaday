@@ -42,12 +42,8 @@ Router.route('/groups/:_id', function () {
   //////////////////////////////////////////////  Helpers //////////////////////////
   Template.userlist.helpers({
     user:function(){       
-      return  Meteor.users.find();
-    },
-    usernameGoogle: function(){            
-      return this.services.google.name;
-      console.log(this);
-    }    
+      return  Userlist.find();
+    }
   }); 
 
 
@@ -119,13 +115,13 @@ Accounts.onCreateUser(function(options, user) {
   if (options.username) {
     Userlist.insert({
     id: user._id,    
-    usernme: options.username
+    username: options.username
     });
   };
   if (!options.username) {
     Userlist.insert({
     id: user._id,    
-    usernme: user.services.google.name
+    username: user.services.google.name
     });
   };
   
