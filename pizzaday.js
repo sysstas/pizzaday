@@ -93,12 +93,11 @@ Router.route('/groups/:_id', function () {
 
   Template.userlist.events({
     "click .addtogroupe": function (event) {
-      var temp = Groups.findOne({_id: Session.get("idgroupe")});
+                
+          Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});
           
-          console.log(this._id);
-         // temp.insert({
-        //    user: 
-        //  })       
+
+        console.log(Groups.findOne({_id: Session.get("idgroupe")}));       
             
     }
   }); 
