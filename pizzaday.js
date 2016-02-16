@@ -26,6 +26,15 @@ Router.route('/landing', function () {
   });
 });
 
+Router.route('/menu', function () {
+  this.render('navbar', {
+    to:"navbar"
+  });
+  this.render('menu', {
+    to:"main"
+  });
+});
+
 Router.route('/groups/:_id', function () {
   this.render('navbar', {
     to:"navbar"
@@ -44,7 +53,13 @@ Router.route('/groups/:_id', function () {
     user:function(){       
       return  Userlist.find();
     }
-  }); 
+  });
+
+  Template.menu.helpers({
+    menu:function(){       
+      return  Menu.find();
+    }
+  });  
 
 
   Template.groupeList.helpers({
@@ -76,29 +91,67 @@ Router.route('/groups/:_id', function () {
     }
   });
 
+
   Template.groupeList.events({
     "click .delete": function () {
       Groups.remove(this._id);
-      },
+    },
 
-     "click .idadd": function (event){
-      
+    "click .idadd": function (event){      
       Session.set("idgroupe", this._id);
-        console.log(Session.get("idgroupe"));
+      console.log(Session.get("idgroupe"));      
+    }     
+  });
+
+Template.continous_form.events({
+  "click .js-toggle-continous-form":function(event){
+    $("#continous_form").toggle('slow');
+  }, 
+  "submit .js-save-continous-form":function(event){
+
+    var titlec = event.target.titlec.value;
+    var equationc = event.target.equationc.value;
+    var rpc = event.target.rpc.value;
+    var optionsc = event.target.optionsc.value;
+    var graphc = event.target.graphc.value;
+    var rqac = event.target.rqac.value;
+    var descriptionc = event.target.descriptionc.value;   
+    
+      ContinousModel.insert({
+        titlec:titlec, 
+          equationc:equationc, 
+          rpc:rpc, 
+          optionsc:optionsc,
+              graphc:graphc,
+              rqac:rqac,
+              descriptionc:descriptionc
+          });     
+      $("#continous_form").toggle('hide');  
+    return false;
+  }
+});
+  Template.menu.events({
+   // 'click .js-show-image-form':function(event){
+ //     $("#dish_add_form").modal('show');
+  //  }, 
+    'click .js-show-image-form':function(event){
+      $("#image_add_form").modal('show');
+    },
+    
+    "click .order": function () {
       
-     }     
-  }); 
+    },
+
+    "click .adddish": function (event){      
+          
+    }     
+  });  
 
 
 
   Template.userlist.events({
-    "click .addtogroupe": function (event) {
-                
-          Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});
-          
-
-        console.log(Groups.findOne({_id: Session.get("idgroupe")}));       
-            
+    "click .addtogroupe": function (event) {                
+      Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});      
     }
   }); 
 

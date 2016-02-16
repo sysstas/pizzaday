@@ -21,11 +21,7 @@
 </template> 
 
 <template name="landing">
-  <div class="container"> 
-  	<br>
-  	<br>
-  	<br>
-  	<br>
+	<div class="container top-margin">  	
 	 	 <div class="row">
 			{{> userlist}}
 			{{> buttons}}
@@ -35,22 +31,24 @@
 
 
 <template name="navbar">
-	<div class="row">		
-		<nav class="navbar navbar-default navbar-fixed-top">		 
+			
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<a class="navbar-brand" href="/">PizzaDay</a>		 
 		  <div class="container">
 		  	<ul class="nav navbar-nav">
-		  		<li><h1>PizzaDay</h1></li>		  		   		
+		  		<li><a href="/landing">Home</a></li>
+		  		<li><a href="/menu">Menu</a></li>		  		   		
 		   	</ul>
 		   	<ul class="nav navbar-nav navbar-right">
           <li>{{> loginButtons}}</li>		
         </ul>      	
 		  </div>   	  
 		</nav>		
-	</div>	
+		
 </template>
 
 <template name="groupe">
-  <div class="container">
+  <div class="container top-margin">
   	<div class="row">
   		<div class="jumbotron">
 			  <h2>Groupe: "{{groupName}}"</h2>
@@ -60,6 +58,52 @@
 			{{> userlist}}
 		</div>  
 	</div>
+</template>
+
+
+
+
+
+
+<template name="menu">
+	<div class="container top-margin">
+		<div class="row">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				{{#each menu}}
+			  	<div class="col-xs-12 col-sm-12 col-md-12">
+			  		<h4>{{dish}} - {{price}}$</h4><a class="btn btn-info order" href="#">Order</a>
+			  	</div>
+				{{/each}}			
+			</div>
+			<div class="col-xs-6 col-sm-6 col-md-6 top-margin">
+				<a class="btn btn-warning js-show-image-form" href="#">Add new dish</a>
+				<h1>Continous models</h1>
+                {{> continous_form}}
+			</div>
+		</div>
+	</div>
+	
+</template>
+
+<template name="continous_form">    
+    <a class="btn btn-default js-toggle-continous-form" href="#">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>    
+    <div id="continous_form" class="hidden_div">
+        <form class="js-save-continous-form">
+            <div class="form-group">
+                <label for="titlec">Title</label>
+                <input type="text" class="form-control" id="titlec" placeholder="Model X" name="titlec">
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="descriptionc">Description</label>
+                <input type="text" class="form-control" id="descriptionc" placeholder="Some description...." name="descriptionc">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
 </template>
 
 <template name="userlist">
@@ -78,11 +122,11 @@
 			  		{{username}}<a class="btn btn-info addtogroupe" href="#">Add to groupe</a>
 			  		</li>
 			  	</ul>				  
-				{{/each}}
-				
+				{{/each}}				
 		</div>		  	
 	</div>		
 </template>
+
 
 <template name="buttons">
 	<div class="col-xs-9 col-sm-10 col-md-10">
