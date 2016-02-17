@@ -83,7 +83,10 @@ Template.buttons.events({
 
     Groups.insert({
       groupName: text,
-      creator: Meteor.userId()
+      creator: Meteor.userId(),
+      eventdate: "",
+      eventstatus: "",
+      isevent: false
     });
     // Clear form
     event.target.text.value = "";  
@@ -106,7 +109,7 @@ Template.dishadd_form.events({
   "click .js-toggle-form":function(event){
     $("#dishadd_form").toggle('slow');
   }, 
-  
+
   "submit .js-form":function(event){
     event.preventDefault();
     var dishname = event.target.dishname.value;
@@ -122,10 +125,22 @@ Template.dishadd_form.events({
 });
 
 
+Template.addEvent.events({
+  "submit .js-addevent-form":function(event){
+    event.preventDefault();
+    var eventdate = event.target.eventdate.value;    
+    Groups.update({ _id: Session.get("idgroupe") },{ 
+      $set: { eventdate: eventdate,
+               isevent: true 
+             }
+    });
+    event.target.eventdate.value = "";
+  }
+});  
+
 Template.menu.events({
  
 });  
-
 
 
 Template.userlist.events({

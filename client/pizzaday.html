@@ -53,9 +53,12 @@
   		<div class="jumbotron">
 			  <h2>Groupe: "{{groupName}}"</h2>
 			  <h4>Admin is {{creator}}</h4>
-			  <h4>Add users</h4>
+			  {{#if isevent}}
+			  <h4>Next Pizza Day will be {{eventdate}}</h4>
+			  {{/if}}
 		  </div>
 			{{> userlist}}
+			{{> addEvent}}
 		</div>  
 	</div>
 </template>
@@ -146,10 +149,23 @@
 				{{#each groupeNames}}
 			  	<ul>
 			  		<li><a class="idadd" href="/groups/{{_id}}">{{groupName}}</a>
-			  			<button class="delete">&times;</button>
+			  			<button class="btn btn-danger delete">&times;</button>
 			  		</li>
 			  	</ul>				  
 				{{/each}}				
 		</div>		  	
 	</div>		
 </template>
+
+<template name="addEvent">
+	<div class="col-xs-3 col-sm-3 col-md-3">
+		<form class="js-addevent-form">
+			<div class="form-group">
+	      <label for="eventdate">Choose event date</label>
+	      <input type="date" class="form-control" id="eventdate"  name="eventdate">
+	    </div>
+	    <button type="submit" class="btn btn-success">Create an Event</button>
+    </form>
+	</div>		
+</template>
+
