@@ -29,22 +29,7 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = options.profile;
   return user;
 }); 
-  /*var counter = Meteor.users.find().count();
-
-  if (counter >= Userlist.counter.findOne()){
-    if (Meteor.user().profile.name) {
-      Userlist.insert({
-      userId: Meteor.userId(),
-      name: Meteor.user().profile.name 
-      });    
-    }
-    else if (Meteor.user().username){
-      Userlist.insert({
-      userId: Meteor.userId(),
-      name: Meteor.user().username 
-      }); 
-    }
-  } */
+  
     
 
 

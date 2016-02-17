@@ -1,0 +1,36 @@
+<template name="menu">
+	<div class="container top-margin">
+		<div class="row">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				{{#each menu}}
+			  	<div class="col-xs-12 col-sm-12 col-md-12">
+			  		<h4>{{dish}} - {{price}}$</h4>
+			  	</div>
+				{{/each}}			
+			</div>
+			<div class="col-xs-6 col-sm-3 col-md-3 top-margin">
+				<h1>Add a dish to the menu</h1>
+        {{> dishadd_form}}
+			</div>
+		</div>
+	</div>	
+</template>
+
+<template name="dishadd_form">    
+    <a class="btn btn-default js-toggle-form" href="#">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>    
+    <div id="dishadd_form" class="hidden_div">
+        <form class="js-form">
+            <div class="form-group">
+                <label for="dishname">Dish name</label>
+                <input type="text" class="form-control" id="dishname" placeholder="Pizza" name="dishname">
+            </div>           
+            <div class="form-group">
+                <label for="price">Price, $</label>
+                <input type="number" class="form-control" id="price"  name="price">
+            </div>
+            <button type="submit" class="btn btn-success">Add dish</button>
+        </form>
+    </div>
+</template>

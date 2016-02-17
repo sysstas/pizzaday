@@ -69,8 +69,14 @@ Template.groupeList.helpers({
 
 
 Template.groupe.helpers({
-  function(){      
-    return Groups.find({});
+  
+
+  isAdmin:function(){
+    console.log(this.creator);
+    if ( Meteor.userId() == this.creator ) {
+      return true;
+    }
+    else return false;
   }
 });  
 
@@ -138,13 +144,16 @@ Template.addEvent.events({
   }
 });  
 
-Template.menu.events({
- 
-});  
+
 
 
 Template.userlist.events({
   "click .addtogroupe": function (event) {                
-    Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});      
+    Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});
+
+    Userlist.update({_id: this._id},{   
+      $push: {groups: Session.get("idgroupe")}
+    });
+
   }
 }); 
