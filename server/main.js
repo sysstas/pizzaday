@@ -15,13 +15,15 @@ Accounts.onCreateUser(function(options, user) {
   if (options.username) {      
     Userlist.insert({
     id: user._id,    
-    username: options.username
+    username: options.username,
+    groups: []
     });
   };
   if (!options.username) {
     Userlist.insert({
     id: user._id,    
-    username: user.services.google.name
+    username: user.services.google.name,
+    groups: []
     });
   };
   

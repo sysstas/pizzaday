@@ -1,6 +1,11 @@
 .top-margin{
 	margin-top:50px;
 }
+
 .hidden_div{
 	display:none;
-}/* CSS declarations go here */
+}
+
+.admincolor{
+	background-color: lightgray;
+}

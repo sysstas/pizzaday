@@ -58,7 +58,13 @@ Template.menu.helpers({
   menu:function(){       
     return  Menu.find();
   }
-});  
+});
+
+Template.Pizzaday.helpers({
+  menu:function(){       
+    return  Menu.find();
+  }
+});    
 
 
 Template.groupeList.helpers({
@@ -69,11 +75,14 @@ Template.groupeList.helpers({
 
 
 Template.groupe.helpers({
-  
-
-  isAdmin:function(){
-    console.log(this.creator);
+  isAdmin:function(){    
     if ( Meteor.userId() == this.creator ) {
+      return true;
+    }
+    else return false;
+  },
+  statusBuying:function(){
+    if (this.eventstatus == "Buying food...") {
       return true;
     }
     else return false;
@@ -91,8 +100,8 @@ Template.buttons.events({
       groupName: text,
       creator: Meteor.userId(),
       eventdate: "",
-      eventstatus: "",
-      isevent: false
+      isevent: false,
+      eventstatus: "wating for event..."
     });
     // Clear form
     event.target.text.value = "";  
@@ -137,8 +146,9 @@ Template.addEvent.events({
     var eventdate = event.target.eventdate.value;    
     Groups.update({ _id: Session.get("idgroupe") },{ 
       $set: { eventdate: eventdate,
-               isevent: true 
-             }
+              isevent: true,
+              eventstatus: "Event announced"
+            }
     });
     event.target.eventdate.value = "";
   }
@@ -157,3 +167,22 @@ Template.userlist.events({
 
   }
 }); 
+
+
+Template.groupe.events({
+  "click .statusBuying": function (event) {                
+    Groups.update({ _id: Session.get("idgroupe") },{ 
+      $set: { eventstatus: "Buying food..." }
+    });
+  },
+  "click .endEvent": function (event) {                
+    Groups.update({ _id: Session.get("idgroupe") },{ 
+      $set: { 
+              eventstatus: "wating for event...",
+              isevent: false
+            }
+    });
+  }
+}); 
+
+
