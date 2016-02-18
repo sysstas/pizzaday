@@ -66,11 +66,7 @@ Template.Pizzaday.helpers({
   },
   orders:function(){
     return Userlist.findOne({id: Meteor.userId()}).order; 
-  },
- // prices:function(){
-   // return Userlist.findOne({id: Meteor.userId()}).price; 
- // }
-  //,
+  }, 
   total:function(){
     var arr = Userlist.findOne({id: Meteor.userId()}).price
     var count = 0;
@@ -80,7 +76,10 @@ Template.Pizzaday.helpers({
     return count;
   },
   confirm: function(){    
-      return Userlist.findOne({id: Meteor.userId()}).confirm;    
+    return Userlist.findOne({id: Meteor.userId()}).confirm;    
+  },  
+  complete: function(){    
+    return Userlist.findOne({id: Meteor.userId()}).complete;    
   }
 
 });    
@@ -223,6 +222,12 @@ Template.Pizzaday.events({
     var thisUser = Userlist.findOne({id: Meteor.userId()});               
     Userlist.update({_id: thisUser._id},{ 
       $set: { confirm: true }
+    });
+  },
+  "click .complete": function (event){
+    var thisUser = Userlist.findOne({id: Meteor.userId()});               
+    Userlist.update({_id: thisUser._id},{ 
+      $set: { complete: true }
     });
   }
 }); 

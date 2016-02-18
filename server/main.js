@@ -19,7 +19,9 @@ Accounts.onCreateUser(function(options, user) {
     groups: [],
     order: [],
     price: [],
-    confirm: false
+    confirm: false,
+    complete: false,
+    email: options.emails[0].address
     });
   };
   if (!options.username) {
@@ -29,7 +31,9 @@ Accounts.onCreateUser(function(options, user) {
     groups: [],
     order: [],
     price: [],
-    confirm: false
+    confirm: false,
+    complete: false,
+    email: user.services.google.email
     });
   };
   
@@ -38,6 +42,22 @@ Accounts.onCreateUser(function(options, user) {
   return user;
 }); 
   
+Meteor.methods({
+  sendEmail: function (to, from, subject, text) {
+    check([to, from, subject, text], [String]);
+
+    // Let other method calls from the same client start running,
+    // without waiting for the email sending to complete.
+    this.unblock();
+
+    Email.send({
+      to: to,
+      from: from,
+      subject: subject,
+      text: text
+    });
+  }
+});
     
 
 
