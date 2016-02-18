@@ -140,17 +140,27 @@
 
 
 <template name="Pizzaday">	
-	<div class="col-xs-6 col-sm-6 col-md-6">
-		<h1>Make your order</h1>
-		{{#each menu}}	
-			<div>{{dish}} - {{price}}$</div>
-			<a class="btn btn-info order" href="#">Order</a>		
-		{{/each}}			
-	</div>
-	<div class="col-xs-6 col-sm-6 col-md-6">
-		<h1>You order this:</h1>
-		
-	</div>				
+	{{#if confirm}}
+		<div class="col-xs-6 col-sm-6 col-md-6">		
+			<h1>Make your order</h1>
+			{{#each menu}}	
+				<div>{{dish}} - {{price}}$</div>
+				<a class="btn btn-info order" href="#">Order</a>		
+			{{/each}}			
+		</div>
+		<div class="col-xs-6 col-sm-6 col-md-6">
+			<h1>You order this:</h1>
+			{{#each orders}}	
+				<div>{{this}}</div>				
+			{{/each}}	
+			<h4>Total: {{total}}</h4>		
+		</div>
+	{{else}}
+		<div class="col-xs-12 col-sm-12 col-md-12">		
+			<h1>Pizzaday announced. Will you take part?</h1>
+			<a class="btn btn-info confirm" href="#">Confirm</a>
+		</div>	
+	{{/if}}			
 </template>
 
 

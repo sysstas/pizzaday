@@ -16,14 +16,20 @@ Accounts.onCreateUser(function(options, user) {
     Userlist.insert({
     id: user._id,    
     username: options.username,
-    groups: []
+    groups: [],
+    order: [],
+    price: [],
+    confirm: false
     });
   };
   if (!options.username) {
     Userlist.insert({
     id: user._id,    
     username: user.services.google.name,
-    groups: []
+    groups: [],
+    order: [],
+    price: [],
+    confirm: false
     });
   };
   

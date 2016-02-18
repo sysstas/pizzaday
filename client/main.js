@@ -63,7 +63,26 @@ Template.menu.helpers({
 Template.Pizzaday.helpers({
   menu:function(){       
     return  Menu.find();
+  },
+  orders:function(){
+    return Userlist.findOne({id: Meteor.userId()}).order; 
+  },
+ // prices:function(){
+   // return Userlist.findOne({id: Meteor.userId()}).price; 
+ // }
+  //,
+  total:function(){
+    var arr = Userlist.findOne({id: Meteor.userId()}).price
+    var count = 0;
+    for(var i = 0; i < arr.length; i++){
+        count = count + parseFloat(arr[i]);
+    };
+    return count;
+  },
+  confirm: function(){    
+      return Userlist.findOne({id: Meteor.userId()}).confirm;    
   }
+
 });    
 
 
@@ -175,12 +194,35 @@ Template.groupe.events({
       $set: { eventstatus: "Buying food..." }
     });
   },
-  "click .endEvent": function (event) {                
+  "click .endEvent": function (event) {//////// End event ///////////////////                
     Groups.update({ _id: Session.get("idgroupe") },{ 
       $set: { 
               eventstatus: "wating for event...",
               isevent: false
             }
+    });
+    var thisUser = Userlist.findOne({id: Meteor.userId()});               
+    Userlist.update({_id: thisUser._id},{ 
+      $set: { confirm: false }
+    });
+  }
+}); 
+
+Template.Pizzaday.events({
+  "click .order": function (event) { 
+    var thisUser = Userlist.findOne({id: Meteor.userId()});               
+    Userlist.update({_id: thisUser._id},{ 
+      $push: {
+              order: this.dish,
+              price: this.price
+            }
+      }      
+    );
+  },
+  "click .confirm": function (event){
+    var thisUser = Userlist.findOne({id: Meteor.userId()});               
+    Userlist.update({_id: thisUser._id},{ 
+      $set: { confirm: true }
     });
   }
 }); 
