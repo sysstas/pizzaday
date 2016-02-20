@@ -12,7 +12,7 @@ ServiceConfiguration.configurations.insert({
 
 Accounts.onCreateUser(function(options, user) {
   // Here I fix difference between acconts-google and accounts-ui ways of saving username.
-  if (options.username) {      
+  if (options.username) {     
     Userlist.insert({
     id: user._id,    
     username: options.username,
@@ -21,7 +21,8 @@ Accounts.onCreateUser(function(options, user) {
     price: [],
     confirm: false,
     complete: false,
-    email: options.emails[0].address
+    email: options.email,
+    emailText: ""
     });
   };
   if (!options.username) {
@@ -33,7 +34,8 @@ Accounts.onCreateUser(function(options, user) {
     price: [],
     confirm: false,
     complete: false,
-    email: user.services.google.email
+    email: user.services.google.email,
+    emailText: ""
     });
   };
   

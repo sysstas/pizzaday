@@ -104,7 +104,19 @@ Template.groupe.helpers({
       return true;
     }
     else return false;
-  }
+  },
+  usersInGroupe:function(){
+    var Array GroupeUsers = Groups.findOne({ _id: Session.get("idgroupe") }).user;
+    var GroupUsersNames;
+    for (var i = GroupeUsers.length - 1; i >= 0; i--) {
+      if (Userlist.indOne({ _id: GroupeUsers[i]})) {
+        GroupUsersNames.update({ 
+          $push: { user: Userlist.indOne({ _id: GroupeUsers[i]}).username }
+        });  
+      };
+    };
+    return GroupUsersNames;
+  } 
 });  
 
 
@@ -202,7 +214,12 @@ Template.groupe.events({
     });
     var thisUser = Userlist.findOne({id: Meteor.userId()});               
     Userlist.update({_id: thisUser._id},{ 
-      $set: { confirm: false }
+      $set: { 
+              confirm: false, 
+              complete: false,
+              order: [],
+              price: []
+            }
     });
   }
 }); 
@@ -225,10 +242,20 @@ Template.Pizzaday.events({
     });
   },
   "click .complete": function (event){
-    var thisUser = Userlist.findOne({id: Meteor.userId()});               
+    var thisUser = Userlist.findOne({id: Meteor.userId()});
+    var AdminId = Groups.findOne({_id:Session.get("idgroupe")}).creator;
+    var AdminEmail = Userlist.findOne({id: AdminId }).email;
+    var UserEmail = Userlist.findOne({id: Meteor.userId()}).email;
+
     Userlist.update({_id: thisUser._id},{ 
       $set: { complete: true }
     });
+
+    Meteor.call('sendEmail',
+            AdminEmail,
+            UserEmail,
+            'Hello from Meteor!',
+            'This is a test of Email.send.');
   }
 }); 
 

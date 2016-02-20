@@ -1,4 +1,6 @@
 Meteor.startup(function(){
+	process.env.MAIL_URL = 'smtp://testsysstas:chdelsss@smtp.gmail.com:587/' ;// enter your e-mail here///
+
 	if (Menu.find().count() == 0){
 		
 			Menu.insert(
