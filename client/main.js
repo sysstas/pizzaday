@@ -88,7 +88,32 @@ Template.Pizzaday.helpers({
 Template.groupeList.helpers({
   groupeNames:function(){      
     return Groups.find({});
-  }
+  },  
+  myGroupe:function(){
+    var isInGroupe = false;
+   if ( Meteor.userId() == this.creator ) {
+      return true;
+    }
+    else{
+      for (var i = this.user.length - 1; i >= 0; i--) 
+              {
+                 if (this.user[i] == Meteor.userId()) {
+                  return true;
+                 }
+                 else 
+                  return false;   
+              };
+    }
+   
+    
+
+  },
+  isAdmin:function(){    
+    if ( Meteor.userId() == this.creator ) {
+      return true;
+    }
+    else return false;
+  } 
 });
 
 
@@ -204,7 +229,7 @@ Template.userlist.events({
         $push: { user: this.id }});
       Userlist.update({_id: this._id},{   
         $push: {groups: Session.get("idgroupe")}  
-    });  
+      });  
     };    
     
   }
@@ -240,12 +265,11 @@ Template.Pizzaday.events({
   "click .order": function (event) { 
     var thisUser = Userlist.findOne({id: Meteor.userId()});               
     Userlist.update({_id: thisUser._id},{ 
-      $push: {
+      $push:{
               order: this.dish,
               price: this.price
             }
-      }      
-    );
+    });
   },
   "click .confirm": function (event){
     var thisUser = Userlist.findOne({id: Meteor.userId()});               

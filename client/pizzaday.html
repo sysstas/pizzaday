@@ -40,33 +40,38 @@
 			  <h4>Next Pizza Day will be {{eventdate}}</h4>
 			  {{/if}}
 		  </div><!-- / Jumbotron -->
-		  <div class="col-xs-12 col-sm-8 col-md-8 "><!--  Right side -->
+		  <div class="col-xs-12 col-sm-8 col-md-8 "><!--  Left side -->
 			  {{#if isevent}}
 					{{> Pizzaday}}
 				{{else}}
 					<h1>There is no event now...</h1>
 				{{/if}}						
-		  </div><!--  Left side -->
-		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor">
-		  	<h1>Admin panel</h1>
-			{{#if  isAdmin}} 
-				{{#if isevent}}
-					{{#if statusBuying}}
-						<a class="btn btn-info endEvent" href="#">End the event</a>
-					{{else}}
-						<a class="btn btn-info statusBuying" href="#">Change event status to Buying</a>
-					{{/if}}						
-				{{else}}					
-					{{> addEvent}}
-				{{/if}}
-				{{> userlist}} 
-			{{/if}}
-	 		<h1>Users in groupe</h1>
-			{{#each usersInGroupe}}
-				{{this}}
-			{{/each}}
-				  
 		  </div><!-- / Left side -->
+		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor"><!--  Right side -->		  	
+				{{#if  isAdmin}} 
+				<h1>Admin panel</h1>
+					{{#if isevent}}
+						{{#if statusBuying}}
+							<a class="btn btn-info endEvent" href="#">End the event</a>
+						{{else}}
+							<a class="btn btn-info statusBuying" href="#">Change event status to Buying</a>
+						{{/if}}						
+					{{else}}					
+						{{> addEvent}}
+					{{/if}}
+					{{> userlist}}
+					<h1>Users in groupe</h1>
+			 		<ul>
+						{{#each usersInGroupe}}
+							<li>
+								<span class="label label-success">{{this}}</span>
+								<span class="btn btn-danger deleteMember">&times;</span>										
+							</li>	
+						{{/each}}						
+			 		</ul>
+				{{/if}}
+		 		
+		  </div><!-- / Right side -->
 		</div><!-- / Row -->  
 	</div><!-- / Container -->	
 </template>
@@ -115,17 +120,22 @@
 		  	<table class="table">
 		  		<thead>
 			    	<tr>
-				  		<th>Groups</th>				  		
+				  		<th>My Groups</th>				  		
 				  	</tr>
 			  	</thead>
  		  	</table>
-				{{#each groupeNames}}
-			  	<ul>
-			  		<li><a class="idadd" href="/groups/{{_id}}">{{groupName}}</a>
-			  			<button class="btn btn-danger delete">&times;</button>
-			  		</li>
-			  	</ul>				  
-				{{/each}}				
+ 		  	{{#each groupeNames}}
+ 		  		{{#if myGroupe}}					
+				  	<ul>
+				  		<li>
+				  			<a class="idadd" href="/groups/{{_id}}">{{groupName}}</a>
+				  			{{#if isAdmin}}
+				  				<button class="btn btn-danger delete">Delete Groupe &times;</button>
+				  			{{/if}}
+				  		</li>
+				  	</ul> 					
+					{{/if}}
+				{{/each}}
 		</div>		  	
 	</div>		
 </template>
