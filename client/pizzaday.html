@@ -40,13 +40,33 @@
 			  <h4>Next Pizza Day will be {{eventdate}}</h4>
 			  {{/if}}
 		  </div><!-- / Jumbotron -->
+
 		  <div class="col-xs-12 col-sm-8 col-md-8 "><!--  Left side -->
-			  {{#if isevent}}
-					{{> Pizzaday}}
-				{{else}}
-					<h1>There is no event now...</h1>
-				{{/if}}						
+		  	{{#if isAdmin}}
+		  		{{#if isevent}}
+				  	<div class="col-xs-12 col-sm-12 col-md-12 ">
+				  		<h1>Users confirmed their part in event</h1>
+				  			{{#each userConfirmed}}			  				
+									<span class="label label-success">{{this}}</span>							
+				  			{{/each}}
+				  		<h1>Users ordered dishes</h1>
+				  			{{#each userOrdered}}
+									<span class="label label-success">{{this}}</span>
+				  			{{/each}}
+				  		<hr>	
+				  	</div>
+		  		{{/if}}		  		
+		  	{{/if}}	
+
+		  	<div class="col-xs-12 col-sm-12 col-md-12 ">
+				  {{#if isevent}}
+						{{> Pizzaday}}
+					{{else}}
+						<h1>There is no event now...</h1>
+					{{/if}}	
+				</div>					
 		  </div><!-- / Left side -->
+
 		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor"><!--  Right side -->		  	
 				{{#if  isAdmin}} 
 				<h1>Admin panel</h1>
@@ -69,9 +89,9 @@
 							</li>	
 						{{/each}}						
 			 		</ul>
-				{{/if}}
-		 		
+				{{/if}}		 		
 		  </div><!-- / Right side -->
+
 		</div><!-- / Row -->  
 	</div><!-- / Container -->	
 </template>

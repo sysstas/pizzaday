@@ -104,9 +104,6 @@ Template.groupeList.helpers({
                   return false;   
               };
     }
-   
-    
-
   },
   isAdmin:function(){    
     if ( Meteor.userId() == this.creator ) {
@@ -140,9 +137,29 @@ Template.groupe.helpers({
       for (var i = this.user.length - 1; i >= 0; i--) {
       Users[i] = Userlist.findOne({id: this.user[i]}).username;
       };
-    };
-    
-     
+    };    
+    return Users;
+  },
+  userConfirmed:function(){  
+    var Users = new Array();
+    if (this.user) {
+      for (var i = this.user.length - 1; i >= 0; i--) {
+        if (Userlist.findOne({id: this.user[i]}).confirm == true) {
+          Users[i] = Userlist.findOne({id: this.user[i]}).username;
+        };      
+      };
+    };    
+    return Users;
+  },
+  userOrdered:function(){  
+    var Users = new Array();
+    if (this.user) {
+      for (var i = this.user.length - 1; i >= 0; i--) {
+        if (Userlist.findOne({id: this.user[i]}).complete == true) {
+          Users[i] = Userlist.findOne({id: this.user[i]}).username;
+        };      
+      };
+    };    
     return Users;
   } 
 });  
