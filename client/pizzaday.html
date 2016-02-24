@@ -70,16 +70,20 @@
 		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor"><!--  Right side -->		  	
 				{{#if  isAdmin}} 
 				<h1>Admin panel</h1>
+				<hr>
 					{{#if isevent}}
 						{{#if statusBuying}}
 							<a class="btn btn-info endEvent" href="#">End the event</a>
+							<hr>
 						{{else}}
 							<a class="btn btn-info statusBuying" href="#">Change event status to Buying</a>
+							<hr>
 						{{/if}}						
 					{{else}}					
 						{{> addEvent}}
 					{{/if}}
 					{{> userlist}}
+					<hr>
 					<h1>Users in groupe</h1>
 			 		<ul>
 						{{#each usersInGroupe}}
@@ -99,23 +103,15 @@
 
 <template name="userlist">
 	<div class="col-xs-12 col-sm-12 col-md-12">
-		<h1>Add Users</h1>
-		<div class="table-responsive">
-		  	<table class="table">
-		  		<thead>
-			    	<tr>
-				  		<th>Add user</th>				  		
-				  	</tr>
-			  	</thead>
- 		  	</table>
+		<h2>Add Users</h2	>		
 				{{#each user}}
 			  	<ul>
 			  		<li>
 			  		{{username}}<a class="btn btn-info addtogroupe" href="#">Add to groupe</a>
 			  		</li>
 			  	</ul>				  
-				{{/each}}								
-		</div>		  	
+				{{/each}}
+				<hr>
 	</div>		
 </template>
 
@@ -127,6 +123,7 @@
 		  {{#if currentUser}}
 	      <form class="createGroupe">
 	        <input type="text" name="text" placeholder="Type name of groupe" />
+	        <a class="btn btn-info addtogroupe" role="submit" href="#">Create groupe</a>
 	      </form>
 	    {{/if}}
 		</div>
