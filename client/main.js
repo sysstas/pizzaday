@@ -105,17 +105,20 @@ Template.groupe.helpers({
     }
     else return false;
   },
-  usersInGroupe:function(){
-    var Array GroupeUsers = Groups.findOne({ _id: Session.get("idgroupe") }).user;
-    var GroupUsersNames;
-    for (var i = GroupeUsers.length - 1; i >= 0; i--) {
-      if (Userlist.indOne({ _id: GroupeUsers[i]})) {
-        GroupUsersNames.update({ 
-          $push: { user: Userlist.indOne({ _id: GroupeUsers[i]}).username }
-        });  
+  Admin:function(){  
+    var admin = Userlist.findOne({id: this.creator}).username;
+    return admin;
+  }, 
+  usersInGroupe:function(){  
+    var Users = new Array();
+    if (this.user) {
+      for (var i = this.user.length - 1; i >= 0; i--) {
+      Users[i] = Userlist.findOne({id: this.user[i]}).username;
       };
     };
-    return GroupUsersNames;
+    
+     
+    return Users;
   } 
 });  
 
@@ -131,7 +134,8 @@ Template.buttons.events({
       creator: Meteor.userId(),
       eventdate: "",
       isevent: false,
-      eventstatus: "wating for event..."
+      eventstatus: "wating for event...",
+      user: new Array()
     });
     // Clear form
     event.target.text.value = "";  
@@ -188,13 +192,21 @@ Template.addEvent.events({
 
 
 Template.userlist.events({
-  "click .addtogroupe": function (event) {                
-    Groups.update({ _id: Session.get("idgroupe") },{ $push: { user: this.id }});
-
-    Userlist.update({_id: this._id},{   
-      $push: {groups: Session.get("idgroupe")}
-    });
-
+  "click .addtogroupe": function (event) {
+    isUser = false;
+    for (var i = Groups.findOne({ _id: Session.get("idgroupe")}).user.length - 1; i >= 0; i--) {
+      if (Groups.findOne({ _id: Session.get("idgroupe")}).user[i] == this.id){
+        isUser = true;
+      }
+    };
+    if (!isUser) {
+      Groups.update({ _id: Session.get("idgroupe")},{ 
+        $push: { user: this.id }});
+      Userlist.update({_id: this._id},{   
+        $push: {groups: Session.get("idgroupe")}  
+    });  
+    };    
+    
   }
 }); 
 

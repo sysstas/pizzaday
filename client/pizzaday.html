@@ -34,7 +34,7 @@
   	<div class="row">
   		<div class="jumbotron">
 			  <h2>Groupe: "{{groupName}}"</h2>
-			  <h4>Admin is {{creator}}</h4>
+			  <h4>Admin is {{Admin}}</h4>
 			  <h4>Event status: {{eventstatus}}</h4>
 			  {{#if isevent}}
 			  <h4>Next Pizza Day will be {{eventdate}}</h4>
@@ -49,21 +49,23 @@
 		  </div><!--  Left side -->
 		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor">
 		  	<h1>Admin panel</h1>
-				{{#if  isAdmin}} 
-					{{#if isevent}}
-						{{#if statusBuying}}
-							<a class="btn btn-info endEvent" href="#">End the event</a>
-						{{else}}
-							<a class="btn btn-info statusBuying" href="#">Change event status to Buying</a>
-						{{/if}}						
-					{{else}}					
-						{{> addEvent}}
-					{{/if}}
-					{{> userlist}} 
+			{{#if  isAdmin}} 
+				{{#if isevent}}
+					{{#if statusBuying}}
+						<a class="btn btn-info endEvent" href="#">End the event</a>
+					{{else}}
+						<a class="btn btn-info statusBuying" href="#">Change event status to Buying</a>
+					{{/if}}						
+				{{else}}					
+					{{> addEvent}}
 				{{/if}}
-				{{#each usersInGroupe}}
-					{{user}}
-				{{/each}}	
+				{{> userlist}} 
+			{{/if}}
+	 		<h1>Users in groupe</h1>
+			{{#each usersInGroupe}}
+				{{this}}
+			{{/each}}
+				  
 		  </div><!-- / Left side -->
 		</div><!-- / Row -->  
 	</div><!-- / Container -->	
