@@ -165,7 +165,8 @@ Template.buttons.events({
       isevent: false,
       eventstatus: "wating for event...",
       user: new Array(),
-      menu: new Array()
+      menu: new Array(),
+      totalOrder: new Array()
     });
     
     // Clear form
@@ -280,6 +281,14 @@ Template.Pizzaday.events({
       $push:{
               order: this.dish,
               price: this.price
+            }
+    });
+    Groups.update({ _id: Session.get("idgroupe") },{ 
+      $push:{
+              totalOrder: {
+                            totalorder: this.dish,
+                            totalprice: this.price
+                          }
             }
     });
   },
