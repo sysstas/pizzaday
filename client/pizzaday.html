@@ -64,7 +64,17 @@
 					{{else}}
 						<h1>There is no event now...</h1>
 					{{/if}}	
-				</div>					
+				</div>				
+				<div class="col-xs-12 col-sm-12 col-md-12 ">
+					<hr>
+					<h2>Menu</h2>
+					{{#each menu}}
+			  	<div class="col-xs-12 col-sm-12 col-md-12">
+			  		<h4>{{dish}} - {{price}}$</h4>
+			  	</div>
+					{{/each}}
+					<span>add dish</span>{{> dishadd_form}}
+				</div>				
 		  </div><!-- / Left side -->
 
 		  <div class="col-xs-12 col-sm-4 col-md-4 admincolor"><!--  Right side -->		  	
@@ -123,7 +133,7 @@
 		  {{#if currentUser}}
 	      <form class="createGroupe">
 	        <input type="text" name="text" placeholder="Type name of groupe" />
-	        <a class="btn btn-info addtogroupe" role="submit" href="#">Create groupe</a>
+	        <input type="submit" value="Submit" class="btn btn-info">
 	      </form>
 	    {{/if}}
 		</div>

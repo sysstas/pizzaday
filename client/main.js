@@ -25,15 +25,6 @@ Router.route('/landing', function () {
   });
 });
 
-Router.route('/menu', function () {
-  this.render('navbar', {
-    to:"navbar"
-  });
-  this.render('menu', {
-    to:"main"
-  });
-});
-
 Router.route('/groups/:_id', function () {
   this.render('navbar', {
     to:"navbar"
@@ -54,15 +45,10 @@ Template.userlist.helpers({
   }
 });
 
-Template.menu.helpers({
-  menu:function(){       
-    return  Menu.find();
-  }
-});
 
 Template.Pizzaday.helpers({
   menu:function(){       
-    return  Menu.find();
+    return  Groups.findOne({ _id: Session.get("idgroupe") }).menu; 
   },
   orders:function(){
     return Userlist.findOne({id: Meteor.userId()}).order; 
@@ -88,7 +74,7 @@ Template.Pizzaday.helpers({
 Template.groupeList.helpers({
   groupeNames:function(){      
     return Groups.find({});
-  },  
+  },
   myGroupe:function(){
     var isInGroupe = false;
    if ( Meteor.userId() == this.creator ) {
@@ -161,7 +147,8 @@ Template.groupe.helpers({
       };
     };    
     return Users;
-  } 
+  }
+  
 });  
 
 
@@ -170,15 +157,17 @@ Template.buttons.events({
   "submit .createGroupe": function(event) {
     event.preventDefault();
     var text = event.target.text.value;
-
-    Groups.insert({
+    
+      Groups.insert({
       groupName: text,
       creator: Meteor.userId(),
       eventdate: "",
       isevent: false,
       eventstatus: "wating for event...",
-      user: new Array()
+      user: new Array(),
+      menu: new Array()
     });
+    
     // Clear form
     event.target.text.value = "";  
   }
@@ -206,9 +195,15 @@ Template.dishadd_form.events({
     var dishname = event.target.dishname.value;
     var price = event.target.price.value;
          
-    Menu.insert({
-      dish:dishname, 
-      price:price        
+     Groups.update({ _id: Session.get("idgroupe") },{
+      $push:{
+              menu:{
+                dish:dishname, 
+                price:price  
+                }
+      }
+      
+            
     });     
     $("#dishadd_form").toggle('hide');  
     return false;
