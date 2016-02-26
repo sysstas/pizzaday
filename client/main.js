@@ -1,10 +1,14 @@
-/////////////////////////// Adjustment accounts-ui //////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////        Adjustment accounts-ui      ///////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 Accounts.ui.config({
   passwordSignupFields: "USERNAME_AND_EMAIL"
 });
 
-
-/////////////////////////////////////// routing ////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////               Routing              ///////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 Router.configure({
   layoutTemplate: 'ApplicationLayout'
@@ -37,8 +41,9 @@ Router.route('/groups/:_id', function () {
   });
 });
 
-
-//////////////////////////////////////////////  Helpers //////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////               Helpers              ///////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 Template.userlist.helpers({
   user:function(){       
     return  Userlist.find();
@@ -147,12 +152,48 @@ Template.groupe.helpers({
       };
     };    
     return Users;
+  },
+  totalMoney:function(){
+    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder,
+        totalmoney = 0;
+    for (var i = totalArray.length - 1; i >= 0; i--) {
+             totalmoney +=  parseFloat(totalArray[i].totalprice);
+    };
+    return  totalmoney;
+  },
+  totalDishes:function(){ //// Generating Order list /////
+    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder;
+    var array_elements = new Array();
+    for (var i = totalArray.length - 1; i >= 0; i--) {
+      array_elements[i] = totalArray[i].totalorder
+    };
+    
+    array_elements.sort();
+    var current = null;
+    var cnt = 0;
+    for (var i = 0; i < array_elements.length; i++) {
+      if (array_elements[i] != current) {
+        if (cnt > 0) {
+          Groups.update({ _id: Session.get("idgroupe") },{ 
+            $set: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
+          });
+        }
+        current = array_elements[i];
+        cnt = 1;
+      } else {
+        cnt++;
+      }
+    }
+    if (cnt > 0) {
+      Groups.update({ _id: Session.get("idgroupe") },{ 
+        $set: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
+      });
+    }
   }
-  
 });  
-
-
-//////////////////////////////// Events /////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////               Events               ///////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 Template.buttons.events({
   "submit .createGroupe": function(event) {
     event.preventDefault();
@@ -166,7 +207,8 @@ Template.buttons.events({
       eventstatus: "wating for event...",
       user: new Array(),
       menu: new Array(),
-      totalOrder: new Array()
+      totalOrder: new Array(),
+      totalDISHES: new Array()
     });
     
     // Clear form
@@ -255,15 +297,17 @@ Template.groupe.events({
       $set: { eventstatus: "Buying food..." }
     });
   },
-  "click .endEvent": function (event) {//////// End event ///////////////////                
+  "click .endEvent": function (event) {//// End of event ////              
     Groups.update({ _id: Session.get("idgroupe") },{ 
       $set: { 
               eventstatus: "wating for event...",
-              isevent: false
+              isevent: false,
+              totalOrder: [],
+              totalDISHES: []
             }
     });
     var thisUser = Userlist.findOne({id: Meteor.userId()});               
-    Userlist.update({_id: thisUser._id},{ 
+    Userlist.update({_id: thisUser._id},{   //// Set Event stats to empty ////   
       $set: { 
               confirm: false, 
               complete: false,
