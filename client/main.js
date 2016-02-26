@@ -162,33 +162,8 @@ Template.groupe.helpers({
     return  totalmoney;
   },
   totalDishes:function(){ //// Generating Order list /////
-    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder;
-    var array_elements = new Array();
-    for (var i = totalArray.length - 1; i >= 0; i--) {
-      array_elements[i] = totalArray[i].totalorder
-    };
     
-    array_elements.sort();
-    var current = null;
-    var cnt = 0;
-    for (var i = 0; i < array_elements.length; i++) {
-      if (array_elements[i] != current) {
-        if (cnt > 0) {
-          Groups.update({ _id: Session.get("idgroupe") },{ 
-            $set: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
-          });
-        }
-        current = array_elements[i];
-        cnt = 1;
-      } else {
-        cnt++;
-      }
-    }
-    if (cnt > 0) {
-      Groups.update({ _id: Session.get("idgroupe") },{ 
-        $set: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
-      });
-    }
+     return Groups.findOne({_id:Session.get("idgroupe")}).totalDISHES;
   }
 });  
 /////////////////////////////////////////////////////////////////////////////////
@@ -296,6 +271,34 @@ Template.groupe.events({
     Groups.update({ _id: Session.get("idgroupe") },{ 
       $set: { eventstatus: "Buying food..." }
     });
+    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder;
+    var array_elements = new Array();
+    for (var i = totalArray.length - 1; i >= 0; i--) {
+      array_elements[i] = totalArray[i].totalorder
+    };
+    
+    array_elements.sort();
+    var current = null;
+    var cnt = 0;
+    for (var i = array_elements.length -1 ;  i >= 0; i--) {
+      if (array_elements[i] != current) {
+        if (cnt > 0) {
+          Groups.update({ _id: Session.get("idgroupe") },{ 
+            $push: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
+          });
+        }
+        current = array_elements[i];
+        cnt = 1;
+      } else {
+        cnt++;
+      }
+    }
+    if (cnt > 0) {
+      Groups.update({ _id: Session.get("idgroupe") },{ 
+        $push: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
+        
+      });
+    }
   },
   "click .endEvent": function (event) {//// End of event ////              
     Groups.update({ _id: Session.get("idgroupe") },{ 
@@ -306,15 +309,20 @@ Template.groupe.events({
               totalDISHES: []
             }
     });
-    var thisUser = Userlist.findOne({id: Meteor.userId()});               
-    Userlist.update({_id: thisUser._id},{   //// Set Event stats to empty ////   
-      $set: { 
+    var Users = Groups.findOne({ _id: Session.get("idgroupe") }).user;               
+    for (var i = Users.length - 1; i >= 0; i--) {
+      var id =Userlist.findOne({id: Users[i]})._id;
+      
+      Userlist.update({_id: id},{   //// Set Event stats to empty ////   
+        $set: { 
               confirm: false, 
               complete: false,
               order: [],
               price: []
             }
-    });
+      });
+    };
+    
   }
 }); 
 
