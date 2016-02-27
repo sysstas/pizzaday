@@ -71,6 +71,9 @@ Template.Pizzaday.helpers({
   },  
   complete: function(){    
     return Userlist.findOne({id: Meteor.userId()}).complete;    
+  },
+  statusbuying: function(){
+    return  Groups.findOne({ _id: Session.get("idgroupe") }).statusbuying;
   }
 
 });    
@@ -183,7 +186,8 @@ Template.buttons.events({
       user: new Array(),
       menu: new Array(),
       totalOrder: new Array(),
-      totalDISHES: new Array()
+      totalDISHES: new Array(),
+      statusbuying: false
     });
     
     // Clear form
@@ -269,7 +273,10 @@ Template.userlist.events({
 Template.groupe.events({
   "click .statusBuying": function (event) {                
     Groups.update({ _id: Session.get("idgroupe") },{ 
-      $set: { eventstatus: "Buying food..." }
+      $set: { 
+              eventstatus: "Buying food...",
+              statusbuying: true
+            }
     });
     var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder;
     var array_elements = new Array();
@@ -306,7 +313,8 @@ Template.groupe.events({
               eventstatus: "wating for event...",
               isevent: false,
               totalOrder: [],
-              totalDISHES: []
+              totalDISHES: [],
+              statusbuying: false
             }
     });
     var Users = Groups.findOne({ _id: Session.get("idgroupe") }).user;               

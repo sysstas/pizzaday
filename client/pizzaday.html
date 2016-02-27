@@ -215,10 +215,13 @@
 				<a class="btn btn-info complete" href="#">Complete your order</a>	
 			</div>
 		{{else}}
+			{{#if statusbuying}}
+			{{else}}
 			<div class="col-xs-12 col-sm-12 col-md-12">		
 				<h1>Pizzaday announced. Will you take part?</h1>
 				<a class="btn btn-info confirm" href="#">Confirm</a>
-			</div>	
+			</div>
+			{{/if}}	
 		{{/if}}	
 	{{/if}}		
 </template>
