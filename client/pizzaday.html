@@ -87,7 +87,8 @@
 							<hr>
 							<h4>Total money: {{totalMoney}} $</h4>
 							<hr>
-							{{#each totalDishes}}
+							<h2>All dishes ordered:</h2>
+							{{#each totalDishes}}								
 								<h4>Dish: {{this}} </h4>
 							{{/each}}
 						{{else}}
@@ -108,6 +109,8 @@
 							</li>	
 						{{/each}}						
 			 		</ul>
+			 		<hr>
+			 		<h3>Email settings</h3>
 				{{/if}}		 		
 		  </div><!-- / Right side -->
 

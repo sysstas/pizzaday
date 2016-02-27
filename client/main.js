@@ -187,7 +187,9 @@ Template.buttons.events({
       menu: new Array(),
       totalOrder: new Array(),
       totalDISHES: new Array(),
-      statusbuying: false
+      statusbuying: false,
+      emailTextAddNewUser: "",
+      emailTextConfirmOrder: ""
     });
     
     // Clear form
@@ -197,17 +199,17 @@ Template.buttons.events({
 
 
 Template.groupeList.events({
-  "click .delete": function () {
+  "click .delete": function () { //// Removing groupe from the list ////
     Groups.remove(this._id);
   },
 
-  "click .idadd": function (event){      
+  "click .idadd": function (event){ //// Adding group _id to Session ////
     Session.set("idgroupe", this._id);          
   }     
 });
 
 
-Template.dishadd_form.events({
+Template.dishadd_form.events({ //// Here we adding dishes to the menu ////
   "click .js-toggle-form":function(event){
     $("#dishadd_form").toggle('slow');
   }, 
@@ -215,17 +217,14 @@ Template.dishadd_form.events({
   "submit .js-form":function(event){
     event.preventDefault();
     var dishname = event.target.dishname.value;
-    var price = event.target.price.value;
-         
-     Groups.update({ _id: Session.get("idgroupe") },{
+    var price = event.target.price.value;         
+    Groups.update({ _id: Session.get("idgroupe") },{
       $push:{
-              menu:{
-                dish:dishname, 
-                price:price  
-                }
-      }
-      
-            
+              menu: {
+                     dish:dishname, 
+                     price:price  
+                    }
+            }
     });     
     $("#dishadd_form").toggle('hide');  
     return false;
@@ -233,12 +232,13 @@ Template.dishadd_form.events({
 });
 
 
-Template.addEvent.events({
+Template.addEvent.events({    //// Adding new event ////
   "submit .js-addevent-form":function(event){
     event.preventDefault();
     var eventdate = event.target.eventdate.value;    
     Groups.update({ _id: Session.get("idgroupe") },{ 
-      $set: { eventdate: eventdate,
+      $set: { 
+              eventdate: eventdate,
               isevent: true,
               eventstatus: "Event announced"
             }
@@ -246,8 +246,6 @@ Template.addEvent.events({
     event.target.eventdate.value = "";
   }
 });  
-
-
 
 
 Template.userlist.events({
@@ -258,54 +256,56 @@ Template.userlist.events({
         isUser = true;
       }
     };
-    if (!isUser) {
-      Groups.update({ _id: Session.get("idgroupe")},{ 
-        $push: { user: this.id }});
-      Userlist.update({_id: this._id},{   
-        $push: {groups: Session.get("idgroupe")}  
+    if (!isUser) {                    
+      Groups.update({ _id: Session.get("idgroupe")},{ //// Adding user id to this groupe ////
+        $push:  { 
+                  user: this.id 
+                }
+      });
+      Userlist.update({_id: this._id},{   //// Adding groupe id to this user ////
+        $push:  {
+                  groups: Session.get("idgroupe")
+                }  
       });  
-    };    
-    
+    };
   }
 }); 
 
 
 Template.groupe.events({
-  "click .statusBuying": function (event) {                
-    Groups.update({ _id: Session.get("idgroupe") },{ 
+  "click .statusBuying": function (event) {               
+    Groups.update({ _id: Session.get("idgroupe") },{ //// Changing event status to "Buying" //// 
       $set: { 
-              eventstatus: "Buying food...",
+              eventstatus: "Buying food...",         
               statusbuying: true
             }
     });
-    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder;
-    var array_elements = new Array();
-    for (var i = totalArray.length - 1; i >= 0; i--) {
-      array_elements[i] = totalArray[i].totalorder
-    };
-    
-    array_elements.sort();
-    var current = null;
-    var cnt = 0;
-    for (var i = array_elements.length -1 ;  i >= 0; i--) {
-      if (array_elements[i] != current) {
-        if (cnt > 0) {
-          Groups.update({ _id: Session.get("idgroupe") },{ 
-            $push: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
-          });
-        }
-        current = array_elements[i];
-        cnt = 1;
-      } else {
-        cnt++;
-      }
-    }
-    if (cnt > 0) {
-      Groups.update({ _id: Session.get("idgroupe") },{ 
-        $push: { totalDISHES: current + ' comes --> ' + cnt + ' times<br>'}
-        
-      });
-    }
+    var totalArray = Groups.findOne({_id:Session.get("idgroupe")}).totalOrder; ///////////////
+    var array_elements = new Array();                                                       //
+    for (var i = totalArray.length - 1; i >= 0; i--) {                                      //
+      array_elements[i] = totalArray[i].totalorder                                          //
+    };                                                                                      //
+    array_elements.sort();                                                                  //
+    var current = null;                                                                     //
+    var cnt = 0;                                                                            //
+    for (var i = array_elements.length -1 ;  i >= 0; i--) {                                 //
+      if (array_elements[i] != current) {                                                   //
+        if (cnt > 0) {                                                                      //
+          Groups.update({ _id: Session.get("idgroupe") },{                                  //
+            $push: { totalDISHES: current + ' : ' + cnt}                                    //
+          });                                                                               //
+        }                             ////////////////////////////////////////////////////////
+        current = array_elements[i];  //// Here I forming user friendly list from array///////
+        cnt = 1;                      ////////////////////////////////////////////////////////
+      } else {                                                                              //
+        cnt++;                                                                              //
+      }                                                                                     //
+    }                                                                                       //
+    if (cnt > 0) {                                                                          //
+      Groups.update({ _id: Session.get("idgroupe") },{                                      //
+        $push: { totalDISHES: current + ' : ' + cnt}                                        //          
+      });                                                                                   //  
+    }   //////////////////////////////////////////////////////////////////////////////////////
   },
   "click .endEvent": function (event) {//// End of event ////              
     Groups.update({ _id: Session.get("idgroupe") },{ 
@@ -359,11 +359,41 @@ Template.Pizzaday.events({
     });
   },
   "click .complete": function (event){
+    var thisgroupe = Groups.findOne({_id:Session.get("idgroupe")});
     var thisUser = Userlist.findOne({id: Meteor.userId()});
-    var AdminId = Groups.findOne({_id:Session.get("idgroupe")}).creator;
+    var AdminId = thisgroupe.creator;
     var AdminEmail = Userlist.findOne({id: AdminId }).email;
-    var UserEmail = Userlist.findOne({id: Meteor.userId()}).email;
+    var UserEmail = thisUser.email;
+    var arr = thisUser.price;
 
+
+          
+          var array_elements = thisUser.order;                                                       //
+          var friendlyOrder = new Array();                                                       //
+          array_elements.sort();                                                                  //
+          var current = null;                                                                     //
+          var cnt = 0;                                                                            //
+          for (var i = array_elements.length -1 ;  i >= 0; i--) {                                 //
+            if (array_elements[i] != current) {                                                   //
+              if (cnt > 0) {      
+                       friendlyOrder.push(current + ' : ' + cnt);                                                       //
+                                                                                               //
+              }                             ////////////////////////////////////////////////////////
+              current = array_elements[i];  //// Here I forming user friendly list from array///////
+              cnt = 1;                      ////////////////////////////////////////////////////////
+            } else {                                                                              //
+              cnt++;                                                                              //
+            }                                                                                     //
+          }                                                                                       //
+          if (cnt > 0) {                                                                          //
+            friendlyOrder.push(current + ' : ' + cnt);                                                                                   //  
+          }   //////////////////////////////////////////////////////////////////////////////////////
+
+    var count = 0;
+    for(var i = 0; i < arr.length; i++){
+        count = count + parseFloat(arr[i]);
+    };
+    var EmalText = "You order this:\n" + friendlyOrder + "\n You should give to admin: " + count +" $ \n" + thisgroupe.emailTextConfirmOrder;
     Userlist.update({_id: thisUser._id},{ 
       $set: { complete: true }
     });
@@ -371,8 +401,8 @@ Template.Pizzaday.events({
     Meteor.call('sendEmail',
             AdminEmail,
             UserEmail,
-            'Hello from Meteor!',
-            'This is a test of Email.send.');
+            "Your Pizzaday order",
+            EmalText);
   }
 }); 
 
