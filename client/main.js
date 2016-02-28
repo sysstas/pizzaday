@@ -167,6 +167,9 @@ Template.groupe.helpers({
   totalDishes:function(){ //// Generating Order list /////
     
      return Groups.findOne({_id:Session.get("idgroupe")}).totalDISHES;
+  },
+  changeEmailConfirm:function(){
+    return this.emailTextConfirmOrder;
   }
 });  
 /////////////////////////////////////////////////////////////////////////////////
@@ -188,8 +191,8 @@ Template.buttons.events({
       totalOrder: new Array(),
       totalDISHES: new Array(),
       statusbuying: false,
-      emailTextAddNewUser: "",
-      emailTextConfirmOrder: ""
+      emailTextAddNewUser: " ",
+      emailTextConfirmOrder: " dfsfdfs "
     });
     
     // Clear form
@@ -329,9 +332,53 @@ Template.groupe.events({
               price: []
             }
       });
-    };
-    
+    };    
+  },
+  "submit .changeEmailConfirm": function(event) {
+    event.preventDefault();
+    var email = event.target.changeEmailConf.value;    
+      Groups.update({ _id: Session.get("idgroupe") },{ 
+      $set: { 
+              emailTextConfirmOrder: email
+            }
+    });
+  },
+  "click .getEmail": function (event) {
+    var thisgroupe = Groups.findOne({_id:Session.get("idgroupe")});
+    var thisUser = Userlist.findOne({id: Meteor.userId()});
+    var AdminId = thisgroupe.creator;
+    var AdminEmail = Userlist.findOne({id: AdminId }).email;
+    var UserEmail = thisUser.email;
+    var arr = thisUser.price;          
+      var array_elements = thisUser.order;                   ///////////////////////////////////
+      var friendlyOrder = new Array();                                                        //
+      array_elements.sort();                                                                  //
+      var current = null;                                                                     //
+      var cnt = 0;                                                                            //
+      for (var i = array_elements.length -1 ;  i >= 0; i--) {                                 //
+        if (array_elements[i] != current) {                                                   //
+          if (cnt > 0) {                                                                      //  
+                   friendlyOrder.push(current + ' : ' + cnt);                                 //
+                                                                                              //
+          }                             ////////////////////////////////////////////////////////
+          current = array_elements[i];  //// Here I forming user friendly list from array///////
+          cnt = 1;                      ////////////////////////////////////////////////////////
+        } else {                                                                              //
+          cnt++;                                                                              //
+        }                                                                                     //
+      }                                                                                       //
+      if (cnt > 0) {                                                                          //
+        friendlyOrder.push(current + ' : ' + cnt);                                            //  
+      }   //////////////////////////////////////////////////////////////////////////////////////
+      var emailtext = "Order list for pizzaday: \n" + friendlyOrder;
+    Meteor.call('sendEmail',
+            UserEmail,
+            AdminEmail,            
+            "Pizzaday order list",
+            emailtext);
+
   }
+
 }); 
 
 Template.Pizzaday.events({
@@ -364,30 +411,27 @@ Template.Pizzaday.events({
     var AdminId = thisgroupe.creator;
     var AdminEmail = Userlist.findOne({id: AdminId }).email;
     var UserEmail = thisUser.email;
-    var arr = thisUser.price;
-
-
-          
-          var array_elements = thisUser.order;                                                       //
-          var friendlyOrder = new Array();                                                       //
-          array_elements.sort();                                                                  //
-          var current = null;                                                                     //
-          var cnt = 0;                                                                            //
-          for (var i = array_elements.length -1 ;  i >= 0; i--) {                                 //
-            if (array_elements[i] != current) {                                                   //
-              if (cnt > 0) {      
-                       friendlyOrder.push(current + ' : ' + cnt);                                                       //
-                                                                                               //
-              }                             ////////////////////////////////////////////////////////
-              current = array_elements[i];  //// Here I forming user friendly list from array///////
-              cnt = 1;                      ////////////////////////////////////////////////////////
-            } else {                                                                              //
-              cnt++;                                                                              //
-            }                                                                                     //
-          }                                                                                       //
-          if (cnt > 0) {                                                                          //
-            friendlyOrder.push(current + ' : ' + cnt);                                                                                   //  
-          }   //////////////////////////////////////////////////////////////////////////////////////
+    var arr = thisUser.price;          
+      var array_elements = thisUser.order;                   ///////////////////////////////////
+      var friendlyOrder = new Array();                                                        //
+      array_elements.sort();                                                                  //
+      var current = null;                                                                     //
+      var cnt = 0;                                                                            //
+      for (var i = array_elements.length -1 ;  i >= 0; i--) {                                 //
+        if (array_elements[i] != current) {                                                   //
+          if (cnt > 0) {                                                                      //  
+                   friendlyOrder.push(current + ' : ' + cnt);                                 //
+                                                                                              //
+          }                             ////////////////////////////////////////////////////////
+          current = array_elements[i];  //// Here I forming user friendly list from array///////
+          cnt = 1;                      ////////////////////////////////////////////////////////
+        } else {                                                                              //
+          cnt++;                                                                              //
+        }                                                                                     //
+      }                                                                                       //
+      if (cnt > 0) {                                                                          //
+        friendlyOrder.push(current + ' : ' + cnt);                                            //  
+      }   //////////////////////////////////////////////////////////////////////////////////////
 
     var count = 0;
     for(var i = 0; i < arr.length; i++){
@@ -399,8 +443,8 @@ Template.Pizzaday.events({
     });
 
     Meteor.call('sendEmail',
-            AdminEmail,
             UserEmail,
+            AdminEmail,            
             "Your Pizzaday order",
             EmalText);
   }

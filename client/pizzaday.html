@@ -23,7 +23,7 @@
 <template name="landing">
 	<div class="container top-margin">  	
 	 	 <div class="row">
-			{{> userlist}}
+			
 			{{> buttons}}
 	  </div>	  	
 	</div>    
@@ -83,7 +83,8 @@
 				<hr>
 					{{#if isevent}}
 						{{#if statusBuying}}
-							<a class="btn btn-info endEvent" href="#">End the event</a>
+							<a class="btn btn-danger endEvent" href="#">End the event</a>
+							<a class="btn btn-success getEmail" href="#">Get email with final list</a>
 							<hr>
 							<h4>Total money: {{totalMoney}} $</h4>
 							<hr>
@@ -111,6 +112,13 @@
 			 		</ul>
 			 		<hr>
 			 		<h3>Email settings</h3>
+			 		<form class="changeEmailConfirm">
+		      	<h2>Change text of confirm order email</h2>		        
+		        <textarea rows="5" cols="45" name="changeEmailConf">
+							{{changeEmailConfirm}}
+						</textarea> 
+		        <input type="submit" value="Submit" class="btn btn-info">
+	      	</form>
 				{{/if}}		 		
 		  </div><!-- / Right side -->
 
