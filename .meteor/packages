@@ -19,7 +19,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 twbs:bootstrap
-accounts-ui
 accounts-password
 accounts-google
 service-configuration
@@ -27,3 +26,4 @@ iron:router
 email
 check
 mistereo:identicon
+ian:accounts-ui-bootstrap-3

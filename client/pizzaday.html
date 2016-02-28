@@ -21,18 +21,17 @@
 </template> 
 
 <template name="landing">
-	<div class="container top-margin">  	
-	 	 <div class="row">
-			
+	<div class="container top-margin darkblue">  	
+	 	 <div class="row">			
 			{{> buttons}}
 	  </div>	  	
 	</div>    
 </template>
 
 <template name="groupe">
-  <div class="container top-margin">
+  <div class="container top-margin darkblue">
   	<div class="row">
-  		<div class="jumbotron">
+  		<div class="jumbotron groupe">
 			  <h2>Groupe: "{{groupName}}"</h2>
 			  <h4>Admin is {{Admin}}</h4>
 			  <h4>Event status: {{eventstatus}}</h4>
@@ -86,9 +85,9 @@
 							<a class="btn btn-danger endEvent" href="#">End the event</a>
 							<a class="btn btn-success getEmail" href="#">Get email with final list</a>
 							<hr>
-							<h4>Total money: {{totalMoney}} $</h4>
+							<h3>Total money: {{totalMoney}} $</h3>
 							<hr>
-							<h2>All dishes ordered:</h2>
+							<h3>All dishes ordered:</h3>
 							{{#each totalDishes}}								
 								<h4>Dish: {{this}} </h4>
 							{{/each}}
@@ -101,7 +100,7 @@
 					{{/if}}
 					{{> userlist}}
 					<hr>
-					<h1>Users in groupe</h1>
+					<h3>Users in groupe</h3>
 			 		<ul>
 						{{#each usersInGroupe}}
 							<li>
@@ -113,7 +112,7 @@
 			 		<hr>
 			 		<h3>Email settings</h3>
 			 		<form class="changeEmailConfirm">
-		      	<h2>Change text of confirm order email</h2>		        
+		      	<h4>Change text of confirm order email</h4>		        
 		        <textarea rows="5" cols="45" name="changeEmailConf">
 							{{changeEmailConfirm}}
 						</textarea> 
@@ -129,15 +128,15 @@
 
 <template name="userlist">
 	<div class="col-xs-12 col-sm-12 col-md-12">
-		<h2>Add Users</h2	>		
+		<h3>Add Users</h3	>		
 				{{#each user}}
 			  	<ul>
 			  		<li>
-			  		{{username}}<a class="btn btn-info addtogroupe" href="#">Add to groupe</a>
+			  		{{username}}  <a class="btn btn-info addtogroupe" href="#">Add to groupe</a>
 			  		</li>
 			  	</ul>				  
 				{{/each}}
-				<hr>
+				
 	</div>		
 </template>
 

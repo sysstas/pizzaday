@@ -9,3 +9,25 @@
 .admincolor{
 	background-color: lightgray;
 }
+.jumbotron{
+	background-color: #ffd633;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+}
+.navbar-default{
+	background-color: #ffd633;
+	color: white;
+}
+.darkblue{
+	color: #666699;
+}
+.groupe{
+	background-color: #ffd633;
+	color: #666699;
+	text-align: left;
+	font-weight: bold;
+}
+.login{
+	margin-right: 5%;
+}
