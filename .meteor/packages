@@ -26,3 +26,4 @@ service-configuration
 iron:router
 email
 check
+mistereo:identicon

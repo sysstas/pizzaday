@@ -160,27 +160,22 @@
 
 <template name="groupeList">
 	<div class="col-xs-12 col-sm-6 col-md-6">
-		<div class="table-responsive">
-		  	<table class="table">
-		  		<thead>
-			    	<tr>
-				  		<th>My Groups</th>				  		
-				  	</tr>
-			  	</thead>
- 		  	</table>
+		<h2>My groups</h2>
  		  	{{#each groupeNames}}
  		  		{{#if myGroupe}}					
-				  	<ul>
-				  		<li>
-				  			<a class="idadd" href="/groups/{{_id}}">{{groupName}}</a>
+				  	<div class="media">
+				  		<div class="media-left media-middle">
+								<a class="idadd" href="/groups/{{_id}}"><img src="{{identicon groupName}}"></a>
+				  		</div>
+				  		<div class="media-body">
+				  			<a class="idadd" href="/groups/{{_id}}"><h4 class="media-heading">{{groupName}}</h4></a>
 				  			{{#if isAdmin}}
-				  				<button class="btn btn-danger delete">Delete Groupe &times;</button>
+				  				<p>Delete groupe   <button class="btn btn-danger delete">&times;</button></p>
 				  			{{/if}}
-				  		</li>
-				  	</ul> 					
+				  		</div>
+				  	</div>				  							
 					{{/if}}
-				{{/each}}
-		</div>		  	
+				{{/each}}			  	
 	</div>		
 </template>
 

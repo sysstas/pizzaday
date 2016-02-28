@@ -191,8 +191,7 @@ Template.buttons.events({
       totalOrder: new Array(),
       totalDISHES: new Array(),
       statusbuying: false,
-      emailTextAddNewUser: " ",
-      emailTextConfirmOrder: " dfsfdfs "
+      emailTextConfirmOrder: " With love, your Pizzaday!! "
     });
     
     // Clear form
